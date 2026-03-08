@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Pendulum - Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e, #16213e, #0f0f1a);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 6vw, 2.4rem);
+            text-align: center;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .diagram {
+            opacity: 0;
+            animation: fadeSlideIn 0.4s ease forwards;
+            animation-delay: 1.0s;
+        }
+
+        .diagram svg {
+            width: 180px;
+            height: 180px;
+        }
+
+        .description {
+            opacity: 0;
+            animation: fadeSlideIn 0.4s ease forwards;
+            animation-delay: 1.0s;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .prompt-section {
+            opacity: 0;
+            animation: fadeSlideIn 0.4s ease forwards;
+            animation-delay: 2.0s;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .prompt-section h2 {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .prompt-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .prompt-section li {
+            opacity: 0;
+            animation: fadeSlideIn 0.4s ease forwards;
+            background: rgba(102, 126, 234, 0.15);
+            border-left: 3px solid #667eea;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .prompt-section li:nth-child(1) {
+            animation-delay: 3.0s;
+        }
+
+        .prompt-section li:nth-child(2) {
+            animation-delay: 4.0s;
+        }
+
+        .prompt-section li:nth-child(3) {
+            animation-delay: 5.0s;
+        }
+
+        @media (max-aspect-ratio: 9/16) {
+            .container {
+                gap: 20px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .diagram svg {
+                width: 140px;
+                height: 140px;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .prompt-section {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Double Pendulum</h1>
+
+        <div class="diagram">
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pivot -->
+                <circle cx="100" cy="30" r="8" fill="#666"/>
+
+                <!-- First arm -->
+                <line x1="100" y1="30" x2="60" y2="100" stroke="#888" stroke-width="3"/>
+
+                <!-- First bob -->
+                <circle cx="60" cy="100" r="12" fill="url(#grad1)"/>
+
+                <!-- Second arm -->
+                <line x1="60" y1="100" x2="90" y2="170" stroke="#888" stroke-width="3"/>
+
+                <!-- Second bob -->
+                <circle cx="90" cy="170" r="12" fill="url(#grad2)"/>
+
+                <!-- Trail (decorative) -->
+                <path d="M90 170 Q 120 150, 130 180 Q 140 200, 110 190 Q 80 180, 100 160"
+                      stroke="url(#trailGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                <defs>
+                    <radialGradient id="grad1" cx="40%" cy="40%">
+                        <stop offset="0%" stop-color="#48dbfb"/>
+                        <stop offset="100%" stop-color="#0abde3"/>
+                    </radialGradient>
+                    <radialGradient id="grad2" cx="40%" cy="40%">
+                        <stop offset="0%" stop-color="#ff6b6b"/>
+                        <stop offset="100%" stop-color="#ee5a5a"/>
+                    </radialGradient>
+                    <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ff6b6b" stop-opacity="0.2"/>
+                        <stop offset="100%" stop-color="#feca57" stop-opacity="0.8"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <p class="description">
+            つながった2つの振り子が描く<br>カオス的な軌跡を見てみる
+        </p>
+
+        <div class="prompt-section">
+            <h2>プロンプト(要約)</h2>
+            <ul>
+                <li>Matter.jsで二重振り子の物理シミュレーション</li>
+                <li>軌跡の描画とエネルギー表示グラフ</li>
+                <li>パラメータ調整UI（長さ・質量・角度・重力）</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
